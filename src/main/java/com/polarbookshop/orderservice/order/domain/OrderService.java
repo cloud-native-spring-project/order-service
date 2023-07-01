@@ -1,4 +1,4 @@
-package com.polarbookshop.orderservice.domain;
+package com.polarbookshop.orderservice.order.domain;
 
 import com.polarbookshop.orderservice.book.Book;
 import com.polarbookshop.orderservice.book.BookClient;
@@ -30,13 +30,13 @@ public class OrderService {
                 .flatMap(orderRepository::save);
     }
 
-    private Order buildRejectedOrder(
+    public static Order buildRejectedOrder(
             String bookIsbn, int quantity
     ) {
         return Order.of(bookIsbn, null, null, quantity, OrderStatus.REJECTED);
     }
 
-    private Order buildAcceptedOrder(Book book, int quantity) {
+    public static Order buildAcceptedOrder(Book book, int quantity) {
         return Order.of(book.isbn(), "%s - %s".formatted(book.title(), book.author()),
                 book.price(), quantity, OrderStatus.ACCEPTED);
     }
