@@ -27,20 +27,22 @@ spec:
                     ports:
                         -   containerPort: 9002
                     env:
-                    -   name: BPL_JVM_THREAD_COUNT
-                        value: "50"
-                    -   name: BPL_DEBUG_ENABLED
-                        value: "true"
-                    -   name: BPL_DEBUG_PORT
-                        value: "8002"
-                    -   name: POLAR_CATALOG_SERVICE_URI
-                        value: http://catalog-service
-                    -   name: SPRING_CLOUD_CONFIG_URI
-                        value: http://config-service
-                    -   name: SPRING_R2DBC_URL
-                        value: r2dbc:postgresql://polar-postgres:5432/polardb_order
-                    -   name: SPRING_FLYWAY_URL
-                        value: jdbc:postgresql://polar-postgres:5432/polardb_order
-                    -   name: SPRING_CLOUD_CONFIG_FAIL-FAST
-                        value: "true"
+                        -   name: BPL_JVM_THREAD_COUNT
+                            value: "50"
+                        -   name: BPL_DEBUG_ENABLED
+                            value: "true"
+                        -   name: BPL_DEBUG_PORT
+                            value: "8002"
+                        -   name: POLAR_CATALOG_SERVICE_URI
+                            value: http://catalog-service
+                        -   name: SPRING_CLOUD_CONFIG_URI
+                            value: http://config-service
+                        -   name: SPRING_R2DBC_URL
+                            value: r2dbc:postgresql://polar-postgres:5432/polardb_order
+                        -   name: SPRING_FLYWAY_URL
+                            value: jdbc:postgresql://polar-postgres:5432/polardb_order
+                        -   name: SPRING_RABBITMQ_HOST
+                            value: polar-rabbitmq
+                        -   name: SPRING_CLOUD_CONFIG_FAIL-FAST
+                            value: "true"
       
