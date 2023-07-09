@@ -15,6 +15,7 @@ ext {
     set('springCloudVersion', "2022.0.3")
     set('testcontainersVersion', "1.18.3")
     set('testKeycloakVersion', "2.3.0")
+    set('otelVersion', "1.26.0")
 }
 
 bootBuildImage {
@@ -31,9 +32,9 @@ bootBuildImage {
 }
 
 // For M1 Mac
-tasks.named("bootBuildImage") {
-    builder = "dashaun/builder:tiny"
-}
+//tasks.named("bootBuildImage") {
+//    builder = "dashaun/builder:tiny"
+//}
 
 repositories {
     mavenCentral()
@@ -53,6 +54,10 @@ dependencies {
 
     //OAuth2 Resource Server
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    //o11y
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+    runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'org.postgresql:r2dbc-postgresql'

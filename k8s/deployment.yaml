@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: order-service
-    namespace: polar
     labels:
         app: order-service
 spec:
@@ -12,38 +11,32 @@ spec:
             app: order-service
     template:
         metadata:
-            name: order-service
             labels:
                 app: order-service
+            annotations:
+                prometheus.io/scrape: "true"
+                prometheus.io/path: /actuator/prometheus
+                prometheus.io/port: "9002"
         spec:
             containers:
-                -   name: order-service
-                    image: order-service
-                    imagePullPolicy: IfNotPresent
-                    lifecycle:
-                        preStop:
-                            exec:
-                                command: [ "sh", "-c", "sleep 5" ]
-                    ports:
-                        -   containerPort: 9002
-                    env:
-                        -   name: BPL_JVM_THREAD_COUNT
-                            value: "50"
-                        -   name: BPL_DEBUG_ENABLED
-                            value: "true"
-                        -   name: BPL_DEBUG_PORT
-                            value: "8002"
-                        -   name: POLAR_CATALOG_SERVICE_URI
-                            value: http://catalog-service
-                        -   name: SPRING_CLOUD_CONFIG_URI
-                            value: http://config-service
-                        -   name: SPRING_R2DBC_URL
-                            value: r2dbc:postgresql://polar-postgres:5432/polardb_order
-                        -   name: SPRING_FLYWAY_URL
-                            value: jdbc:postgresql://polar-postgres:5432/polardb_order
-                        -   name: SPRING_RABBITMQ_HOST
-                            value: polar-rabbitmq
-                        -   name: SPRING_CLOUD_CONFIG_FAIL-FAST
-                            value: "true"
-                        -   name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-                            value: http://polar-keycloak/realms/PolarBookshop
+                - name: order-service
+                  image: order-service
+                  imagePullPolicy: IfNotPresent
+                  lifecycle:
+                      preStop:
+                          exec:
+                              command: [ "sh", "-c", "sleep 5" ]
+                  ports:
+                      - containerPort: 9002
+                  livenessProbe:
+                      httpGet:
+                          path: /actuator/health/liveness
+                          port: 9002
+                      initialDelaySeconds: 10
+                      periodSeconds: 5
+                  readinessProbe:
+                      httpGet:
+                          port: 9002
+                          path: /actuator/health/readiness
+                      initialDelaySeconds: 5
+                      periodSeconds: 20
