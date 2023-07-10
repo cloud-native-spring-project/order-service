@@ -8,6 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan
 public class OrderServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(OrderServiceApplication.class, args);
+        SpringApplication springApplication = new SpringApplication(OrderServiceApplication.class);
+        springApplication.addListeners(new PropertiesLogger());
+        springApplication.run(args);
     }
 }
